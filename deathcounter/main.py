@@ -1,8 +1,9 @@
 
-from utils.capture import capture_screen
+from utils.overlay import start_overlay
+
 
 
 if __name__ == "__main__":
     
-    ##Start screen capture for counter
-    capture_screen()
+    ##Start the overlay
+    start_overlay()
