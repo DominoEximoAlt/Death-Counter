@@ -74,3 +74,4 @@ Desktop.ini
 *.save
 assets/
 death_data.json
+.env
