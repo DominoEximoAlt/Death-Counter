@@ -1,9 +1,16 @@
 
+import os
+from utils.capture import capture_screen
 from utils.overlay import start_overlay
+
+import os
+
+
 
 
 
 if __name__ == "__main__":
-    
+
     ##Start the overlay
-    start_overlay()
+    #start_overlay()
+    capture_screen()

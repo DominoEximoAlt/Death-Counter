@@ -8,7 +8,6 @@ def detect_death(currentFrame):
     assert template is not None, "file could not be read, check with os.path.exists()"
     ##w, h = template.shape[::-1]
 
-    is_dead = False
     ##FEATURE MATCHING
 
     # Initiate SIFT detector
