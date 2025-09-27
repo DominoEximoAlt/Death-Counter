@@ -44,5 +44,6 @@ class Timer:
 
     def _persist(self):
         state = load_state()
-        state["elapsed"] = self.elapsed_before
+        state["deaths"] = self.get_deaths()
+        state["elapsed"] = self.get_elapsed()
         save_state(state)

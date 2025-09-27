@@ -53,5 +53,6 @@ def update_counter():
 
 
 def stop_overlay(e):
+        t._persist()
         root.destroy()
 
