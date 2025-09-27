@@ -1,12 +1,11 @@
-from utils import timer
-from utils.app_handler import look_for_game_window
-from utils.overlay import start_overlay
+from utils.game_selector import start_selector
+
 
 from dotenv import load_dotenv
 
 if __name__ == "__main__":
-    look_for_game_window()
+    global game_exe
 
     load_dotenv()
-    ##Start the overlay
-    start_overlay()
+    ##Start the selector to choose the game
+    start_selector()

@@ -1,16 +1,17 @@
 import time
 from utils.state import load_state, save_state
+from utils.game_selector import game_exe as game_name
 
 class Timer:
-    def __init__(self):
-        state = load_state()
+    def __init__(self, game_exe):
+        state = load_state(game_exe)
         self.start_time = time.time()
         self.elapsed_before = state.get("elapsed", 0)
         self.deaths = state.get("deaths", 0)
 
-    def get_instance():
+    def get_instance(game_exe):
         if not hasattr(Timer, "_instance"):
-            Timer._instance = Timer()
+            Timer._instance = Timer(game_exe)
         return Timer._instance
 
     def start(self):
@@ -43,7 +44,7 @@ class Timer:
         return f"{h:02}:{m:02}:{s:02}"
 
     def _persist(self):
-        state = load_state()
+        state = load_state(game_name)
         state["deaths"] = self.get_deaths()
         state["elapsed"] = self.get_elapsed()
-        save_state(state)
+        save_state(state, game_name)

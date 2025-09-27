@@ -1,9 +1,7 @@
-import json
-import os
-from datetime import datetime, date
+from utils.game_selector import game_exe
 from utils.timer import Timer
 
-t = Timer.get_instance()
+t = Timer.get_instance(game_exe=game_exe)
 #DEATH METHODS
 
 def read_death():

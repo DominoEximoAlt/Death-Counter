@@ -1,34 +1,37 @@
+from logging import root
 from tkinter import *
 from utils.handle_death import *
 from utils.capture import capture_screen
 import threading
 from utils.timer import Timer
-t = Timer.get_instance()
-root = Tk()
-counter = t.get_deaths()
-time = t.get_elapsed()
-root.title("Death Counter Overlay")
-x="10"     
-y="10" 
 
-root.geometry(f'250x150+{x}+{y}') 
 
-# to remove the titlebar     
-root.overrideredirect(True) 
-root.focus_set()
-root.attributes("-topmost", True)
-root.attributes("-transparentcolor", "black")
-root.config(bg="black") 
-l=Label(root,text=f"Deaths: {counter}",fg="white",font=("Arial",20),bg="black")     
-l.pack()
+def start_overlay(game_name):
+    global t, root, l, timer_label
+    t = Timer.get_instance(game_name)
+    root = Tk()
+    counter = t.get_deaths()
+    time = t.get_elapsed()
+    root.title("Death Counter Overlay")
+    x="10"     
+    y="10" 
 
-timer_label = Label(root,text=f"Time: {time}",fg="white",font=("Arial",20),bg="black")
-timer_label.pack()
+    root.geometry(f'250x150+{x}+{y}') 
 
-root.wm_attributes("-topmost", 1)
+    # to remove the titlebar     
+    root.overrideredirect(True) 
+    root.focus_set()
+    root.attributes("-topmost", True)
+    root.attributes("-transparentcolor", "black")
+    root.config(bg="black") 
+    l=Label(root,text=f"Deaths: {counter}",fg="white",font=("Arial",20),bg="black")     
+    l.pack()
 
-def start_overlay():
+    timer_label = Label(root,text=f"Time: {time}",fg="white",font=("Arial",20),bg="black")
+    timer_label.pack()
 
+    root.wm_attributes("-topmost", 1)
+    
     thread = threading.Thread(target=capture_screen, daemon=True)
     thread.start()
 
