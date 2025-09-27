@@ -1,15 +1,9 @@
-
-import os
-from utils.capture import capture_screen
 from utils.overlay import start_overlay
 
-import os
 from dotenv import load_dotenv
-
-    
-load_dotenv()
+from configuration import config
 
 if __name__ == "__main__":
-
+    load_dotenv()
     ##Start the overlay
     start_overlay()
