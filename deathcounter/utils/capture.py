@@ -1,11 +1,12 @@
 
 import os
-import cv2
 import mss
 import time
 import numpy as np
+
+from utils.handle_death import add_death
+
 from .detector import detect_death
-import os
 from dotenv import load_dotenv
 import ctypes
     
@@ -38,11 +39,12 @@ def capture_screen():
             match_value = detect_death(frame)
 
             if match_value > 28:
-                return True
+                add_death()
+                time.sleep(5)  # to avoid multiple detections in a short time
 
             # Display the picture
-            cv2.imshow("OpenCV/Numpy normal", frame)
-
+            #cv2.imshow("OpenCV/Numpy normal", frame)
+            print(match_value)
             # Display the picture in grayscale
             ##cv2.imshow('OpenCV/Numpy grayscale',
             ##            cv2.cvtColor(img, cv2.COLOR_BGRA2GRAY))
@@ -50,8 +52,8 @@ def capture_screen():
 
 
             # Press "q" to quit
-            if cv2.waitKey(25) & 0xFF == ord("q"):
-                cv2.destroyAllWindows()
-                break
+            #if cv2.waitKey(25) & 0xFF == ord("q"):
+            #    cv2.destroyAllWindows()
+            #    break
 
 
