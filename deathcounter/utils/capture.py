@@ -1,6 +1,4 @@
-
 import os
-import cv2
 import mss
 import time
 import numpy as np
@@ -13,7 +11,7 @@ import ctypes
     
 load_dotenv()
 
-def capture_screen():
+def capture_screen(game_name):
 
     user32 = ctypes.windll.user32
     screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
@@ -36,7 +34,7 @@ def capture_screen():
 
             # Get raw pixels from the screen, save it to a Numpy array
             frame = np.array(sct.grab(monitor))
-            match_value = detect_death(frame)
+            match_value = detect_death(frame, game_name)
 
             if match_value > 28:
                 add_death()

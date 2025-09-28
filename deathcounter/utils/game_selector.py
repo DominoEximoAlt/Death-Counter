@@ -6,8 +6,10 @@ def start_selector():
     pop_up = Tk()
 
     GAMES = {
-        "Lords of the Fallen": "LOTF2.exe",
+        "Lords of the Fallen": "LOTF2-Win64-Shipping.exe",
         "Dark Souls 3": "DarkSoulsIII.exe",
+        "Dark Souls REMASTERED": "DarkSoulsRemastered.exe",
+        "Sekiro": "sekiro.exe",
         "Elden Ring": "eldenring.exe",
     }
 

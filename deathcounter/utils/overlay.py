@@ -31,8 +31,8 @@ def start_overlay(game_name):
     timer_label.pack()
 
     root.wm_attributes("-topmost", 1)
-    
-    thread = threading.Thread(target=capture_screen, daemon=True)
+
+    thread = threading.Thread(target=capture_screen, args=(game_name,), daemon=True)
     thread.start()
 
     

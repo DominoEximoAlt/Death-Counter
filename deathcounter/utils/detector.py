@@ -1,10 +1,10 @@
 import cv2
-import numpy as np
 
-def detect_death(currentFrame):
+
+def detect_death(currentFrame, game_name):
     img_rgb = currentFrame
     assert img_rgb is not None, "file could not be read, check with os.path.exists()"
-    template = cv2.imread("deathcounter/assets/cropped_template.png")
+    template = cv2.imread(f"deathcounter/assets/{game_name}_cropped_template.png")
     assert template is not None, "file could not be read, check with os.path.exists()"
     ##w, h = template.shape[::-1]
 
@@ -28,7 +28,7 @@ def detect_death(currentFrame):
             good.append([m])
         
     # cv2.drawMatchesKnn expects list of lists as matches.
-    img3 = cv2.drawMatchesKnn(template,kp1,img_rgb,kp2,good,None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    #img3 = cv2.drawMatchesKnn(template,kp1,img_rgb,kp2,good,None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
     ##TEMPLATE MATCHING
     ##res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED, None, template)
