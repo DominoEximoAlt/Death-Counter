@@ -1,5 +1,5 @@
 import cv2
-
+import numpy as np
 
 def detect_death(currentFrame, game_name):
     img_rgb = currentFrame
@@ -16,16 +16,21 @@ def detect_death(currentFrame, game_name):
     # find the keypoints and descriptors with SIFT
     kp1, des1 = sift.detectAndCompute(template,None)
     kp2, des2 = sift.detectAndCompute(img_rgb,None)
-    
-    # BFMatcher with default params
-    bf = cv2.BFMatcher()
-    matches = bf.knnMatch(des1,des2,k=2)
-    
-    # Apply ratio test
     good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
+    # BFMatcher with default params
+    if des1 is not None and des2 is not None:
+        bf = cv2.BFMatcher()
+        matches = bf.knnMatch(des1, des2, k=2)  
+        # Lowe's ratio test
+        good = []
+        for m, n in matches:
+            if m.distance < 0.75 * n.distance:
+                good.append(m)
+    else:
+        good.append(0)
+        print("⚠️ No descriptors found in one of the images!")
+        #print(type(des1), des1.shape if des1 is not None else "None")
+        #print(type(des2), des2.shape if des2 is not None else "None")
         
     # cv2.drawMatchesKnn expects list of lists as matches.
     #img3 = cv2.drawMatchesKnn(template,kp1,img_rgb,kp2,good,None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)

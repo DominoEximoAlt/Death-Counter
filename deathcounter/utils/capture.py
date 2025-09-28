@@ -38,7 +38,7 @@ def capture_screen(game_name):
 
             if match_value > 28:
                 add_death()
-                time.sleep(5)  # to avoid multiple detections in a short time
+                time.sleep(10)  # to avoid multiple detections in a short time
 
             # Display the picture
             #cv2.imshow("OpenCV/Numpy normal", frame)

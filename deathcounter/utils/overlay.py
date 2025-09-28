@@ -1,13 +1,23 @@
 from logging import root
 from tkinter import *
+import time
+import psutil
 from utils.handle_death import *
 from utils.capture import capture_screen
 import threading
 from utils.timer import Timer
 
 
+is_running = False
+
 def start_overlay(game_name):
-    global t, root, l, timer_label
+    global t, root, l, timer_label, is_running
+    thread0 = threading.Thread(target=look_for_game_window, args=(game_name+".exe",), daemon=True)
+    thread0.start()
+
+    while not is_running:
+        pass
+
     t = Timer.get_instance(game_name)
     root = Tk()
     counter = t.get_deaths()
@@ -51,6 +61,8 @@ def update_counter():
 
         #time = read_time()
         timer_label.config(text=t.get_formatted())
+        if is_running == False:
+            stop_overlay(None)
     
     root.after(1000, update_counter)
 
@@ -59,3 +71,17 @@ def stop_overlay(e):
         t._persist()
         root.destroy()
 
+def look_for_game_window(game_process):
+    global is_running
+
+    while True:
+        # Implement logic to look for the game window
+        time.sleep(2)  # Simulate waiting for the game to start
+        for proc in psutil.process_iter(['name']):
+            #print(proc.info['name'])
+            if proc.info['name'] == game_process:
+                is_running = True
+                break
+            else:
+                is_running = False
+        print("is_running:", is_running)
