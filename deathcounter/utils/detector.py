@@ -41,5 +41,6 @@ def detect_death(currentFrame, game_name):
     ##loc = np.where( res >= threshold)
     ##for pt in zip(*loc[::-1]):
     ##    cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-    
+    cv2.destroyAllWindows()
     return good.__len__()
+    
