@@ -81,6 +81,7 @@ def look_for_game_window(game_process):
             #print(proc.info['name'])
             if proc.info['name'] == game_process:
                 is_running = True
+                print(proc)
                 break
             else:
                 is_running = False

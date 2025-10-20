@@ -1,6 +1,8 @@
 import os
 import mss
+import gc
 import time
+import hashlib
 import numpy as np
 
 from utils.handle_death import add_death
@@ -29,17 +31,22 @@ def capture_screen(game_name):
             "height":   screensize[1],
             "mon":      monitor_number,
         }
-
+        prev_hash = None
         while True:
 
             # Get raw pixels from the screen, save it to a Numpy array
             frame = np.array(sct.grab(monitor))
-            match_value = detect_death(frame, game_name)
+            new_hash = hashlib.md5(frame).hexdigest()
+            if new_hash != prev_hash:
+                prev_hash = new_hash
+                match_value = detect_death(frame, game_name)
+                del frame
+                gc.collect()
+                if match_value > 28:
+                    add_death()
+                    time.sleep(14)  # to avoid multiple detections in a short time
 
-            if match_value > 28:
-                add_death()
-                time.sleep(10)  # to avoid multiple detections in a short time
-
+            
             # Display the picture
             #cv2.imshow("OpenCV/Numpy normal", frame)
             print(match_value)

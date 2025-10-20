@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from time import *
+import mss
 
 def start_selector():
     pop_up = Tk()
@@ -15,14 +16,23 @@ def start_selector():
 
     pop_up.title("Select Game")
 
-    l = Label(pop_up, text="Choose a game to track:", font=("Arial", 12)).pack(pady=10)
+    Label(pop_up, text="Choose a game to track:", font=("Arial", 12)).pack(pady=10)
 
+    monitors = mss.mss().monitors.__len__() - 1
+    monitor_names = [f"Monitor {i}" for i in range(1, monitors + 1)]
+    #monitor_names = [f"Monitor {i}" for i in monitors if i != 0]
     game_var = StringVar(value=list(GAMES.keys())[0])  # default selection
+    monitor_var = StringVar(value=monitor_names[0])  # default selection
     dropdown = ttk.Combobox(pop_up, textvariable=game_var, values=list(GAMES.keys()), state="readonly")
+    dropdown2 = ttk.Combobox(pop_up, textvariable=monitor_var, values=list(monitor_names), state="readonly")
+
     dropdown.pack(pady=5)
+    dropdown2.pack(pady=5)
 
     def confirm_selection():
         selected_game = game_var.get()
+        print(monitor_var.get()[-1:])
+        selected_monitor = monitor_var.get()[-1:]
         global game_exe
         game_exe = GAMES[selected_game][:-4]
         pop_up.destroy()
