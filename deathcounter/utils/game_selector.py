@@ -33,7 +33,6 @@ def start_selector():
     pop_up.tk.call("set_theme", "dark")
     def confirm_selection():
         selected_game = game_var.get()
-        print(monitor_var.get()[-1:])
         selected_monitor = monitor_var.get()[-1:]
         global game_exe
         game_exe = GAMES[selected_game][:-4]

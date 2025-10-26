@@ -3,8 +3,10 @@ from utils.state import load_state, save_state
 from utils.game_selector import game_exe as game_name
 
 class Timer:
+    is_running = False
     def __init__(self, game_exe):
         state = load_state(game_exe)
+        self.is_running = False
         self.start_time = time.time()
         self.elapsed_before = state.get("elapsed", 0)
         self.deaths = state.get("deaths", 0)
@@ -17,6 +19,10 @@ class Timer:
     def start(self):
         if self.start_time == 0:
             self.start_time = time.time()
+        self.is_running = True
+
+    def pause(self):
+        self.is_running = False
 
     def stop(self):
         if self.start_time != 0:
@@ -48,3 +54,6 @@ class Timer:
         state["deaths"] = self.get_deaths()
         state["elapsed"] = self.get_elapsed()
         save_state(state, game_name)
+
+    def is_running(self):
+        return self.is_running

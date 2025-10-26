@@ -1,6 +1,8 @@
 from logging import root
 from tkinter import *
+from tkinter import ttk
 import time
+import tkinter
 import psutil
 from utils.handle_death import *
 from utils.capture import capture_screen
@@ -12,6 +14,7 @@ is_running = False
 
 def start_overlay(game_name, selected_monitor):
     global t, root, l, timer_label, is_running, time_exceeded
+    time_exceeded = False
     thread0 = threading.Thread(target=look_for_game_window, args=(game_name+".exe",), daemon=True)
     thread0.start()
 
@@ -42,7 +45,11 @@ def start_overlay(game_name, selected_monitor):
 
     timer_label = Label(root,text=f"Time: {time}",fg="white",font=("Arial",20),bg="black")
     timer_label.pack()
+    button_text = tkinter.StringVar(value="Pause")
+  
 
+    toggle_button = Button(root, textvariable=button_text,command=lambda: toggle(button_text), bg="#000001",font=("Arial",20), fg="white",highlightbackground="black",activebackground="grey",overrelief="raised",)
+    toggle_button.pack(padx=20, pady=20, ipadx=10, ipady=5)
     root.wm_attributes("-topmost", 1)
 
     thread = threading.Thread(target=capture_screen, args=(game_name,selected_monitor,), daemon=True)
@@ -59,7 +66,6 @@ def update_counter():
         counter = t.get_deaths()
         l.config(text=f"Deaths: {counter}")
 
-        #time = read_time()
         timer_label.config(text=t.get_formatted())
         if is_running == False:
             stop_overlay(None)
@@ -79,17 +85,21 @@ def look_for_game_window(game_process):
         # Implement logic to look for the game window
         time.sleep(2)  # Simulate waiting for the game to start
         for proc in psutil.process_iter(['name']):
-            #print(proc.info['name'])
             if proc.info['name'] == game_process:
                 is_running = True
-                print(proc)
                 break
             else:
                 is_running = False
-        print("is_running:", is_running)
         wait_time = time.time()
         if wait_time > time_limit and not is_running:
             time_exceeded = True
             print("Exiting overlay.")
             break
 
+   
+def toggle(button_text):
+    if button_text.get() == "Pause":
+        button_text.set("Resume")
+
+    else:
+        button_text.set("Pause")
