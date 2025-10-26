@@ -15,7 +15,7 @@ def start_selector():
     }
 
     pop_up.title("Select Game")
-
+    pop_up.eval('tk::PlaceWindow . center')
     Label(pop_up, text="Choose a game to track:", font=("Arial", 12)).pack(pady=10)
 
     monitors = mss.mss().monitors.__len__() - 1
@@ -28,7 +28,9 @@ def start_selector():
 
     dropdown.pack(pady=5)
     dropdown2.pack(pady=5)
-
+    ## Set theme
+    pop_up.tk.call("source", "deathcounter/assets/azure.tcl")
+    pop_up.tk.call("set_theme", "dark")
     def confirm_selection():
         selected_game = game_var.get()
         print(monitor_var.get()[-1:])
@@ -37,9 +39,9 @@ def start_selector():
         game_exe = GAMES[selected_game][:-4]
         pop_up.destroy()
         from utils.overlay import start_overlay
-        start_overlay(game_exe)
+        start_overlay(game_exe, selected_monitor)
 
-
+    pop_up.protocol('WM_DELETE_WINDOW', pop_up.destroy)
     confirm_button = ttk.Button(pop_up, text="Start", command=confirm_selection)
     confirm_button.pack(pady=10)
 

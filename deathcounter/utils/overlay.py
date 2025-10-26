@@ -10,14 +10,17 @@ from utils.timer import Timer
 
 is_running = False
 
-def start_overlay(game_name):
-    global t, root, l, timer_label, is_running
+def start_overlay(game_name, selected_monitor):
+    global t, root, l, timer_label, is_running, time_exceeded
     thread0 = threading.Thread(target=look_for_game_window, args=(game_name+".exe",), daemon=True)
     thread0.start()
 
-    while not is_running:
+    while not is_running and not time_exceeded:
         pass
 
+    if time_exceeded:
+        return
+    
     t = Timer.get_instance(game_name)
     root = Tk()
     counter = t.get_deaths()
@@ -42,12 +45,9 @@ def start_overlay(game_name):
 
     root.wm_attributes("-topmost", 1)
 
-    thread = threading.Thread(target=capture_screen, args=(game_name,), daemon=True)
+    thread = threading.Thread(target=capture_screen, args=(game_name,selected_monitor,), daemon=True)
     thread.start()
 
-    
-
-    # make window to be always on top
     root.bind("<Escape>", stop_overlay)
     
     update_counter()
@@ -72,8 +72,9 @@ def stop_overlay(e):
         root.destroy()
 
 def look_for_game_window(game_process):
-    global is_running
-
+    global is_running, time_exceeded
+    time_exceeded = False
+    time_limit = time.time() + 10
     while True:
         # Implement logic to look for the game window
         time.sleep(2)  # Simulate waiting for the game to start
@@ -86,3 +87,9 @@ def look_for_game_window(game_process):
             else:
                 is_running = False
         print("is_running:", is_running)
+        wait_time = time.time()
+        if wait_time > time_limit and not is_running:
+            time_exceeded = True
+            print("Exiting overlay.")
+            break
+

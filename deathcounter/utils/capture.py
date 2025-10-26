@@ -13,14 +13,14 @@ import ctypes
     
 load_dotenv()
 
-def capture_screen(game_name):
+def capture_screen(game_name, selected_monitor):
 
     user32 = ctypes.windll.user32
     screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
     with mss.mss() as sct:
 
-        monitor_number = int(os.getenv("CAPTURE_MONITOR"))
+        monitor_number = int(selected_monitor)
         mon = sct.monitors[monitor_number]
 
         # The screen part to capture
