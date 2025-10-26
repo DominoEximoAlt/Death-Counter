@@ -4,9 +4,12 @@ from utils.game_selector import game_exe as game_name
 
 class Timer:
     is_running = False
+
     def __init__(self, game_exe):
         state = load_state(game_exe)
         self.is_running = False
+        self.pause_start = time.time()
+        self.paused_time = 0
         self.start_time = time.time()
         self.elapsed_before = state.get("elapsed", 0)
         self.deaths = state.get("deaths", 0)
@@ -23,17 +26,22 @@ class Timer:
 
     def pause(self):
         self.is_running = False
+        self.pause_start = time.time()              
 
-    def stop(self):
-        if self.start_time != 0:
-            self.elapsed_before += time.time() - self.start_time
-            self.start_time = 0
-        self._persist()
+
+    def resume(self):
+        self.is_running = True
+        pause_time = time.time() - self.pause_start
+        self.start_time += pause_time
 
     def get_elapsed(self):
         total = self.elapsed_before
-        if self.start_time is not None:
+        if not self.is_running:
+            self.paused_time = time.time() - self.pause_start
+        if self.is_running:
             total += time.time() - self.start_time
+        else:
+            total += self.pause_start - self.start_time
         return int(total)
 
     def get_deaths(self):

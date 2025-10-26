@@ -6,7 +6,7 @@ import hashlib
 import numpy as np
 
 from utils.handle_death import add_death
-
+from utils.timer import Timer
 from .detector import detect_death
 from dotenv import load_dotenv
 import ctypes
@@ -17,7 +17,7 @@ def capture_screen(game_name, selected_monitor):
 
     user32 = ctypes.windll.user32
     screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-
+    t = Timer.get_instance(game_name)
     with mss.mss() as sct:
 
         monitor_number = int(selected_monitor)
@@ -46,7 +46,7 @@ def capture_screen(game_name, selected_monitor):
                     gc.collect()
                     last_gc = time.time()
 
-                if match_value > 28:
+                if match_value > 28 and t.is_running:
                     add_death()
                     time.sleep(14)  # to avoid multiple detections in a short time
 

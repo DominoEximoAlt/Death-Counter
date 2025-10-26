@@ -45,7 +45,7 @@ def start_overlay(game_name, selected_monitor):
 
     timer_label = Label(root,text=f"Time: {time}",fg="white",font=("Arial",20),bg="black")
     timer_label.pack()
-    button_text = tkinter.StringVar(value="Pause")
+    button_text = tkinter.StringVar(value="Resume")
   
 
     toggle_button = Button(root, textvariable=button_text,command=lambda: toggle(button_text), bg="#000001",font=("Arial",20), fg="white",highlightbackground="black",activebackground="grey",overrelief="raised",)
@@ -99,7 +99,9 @@ def look_for_game_window(game_process):
    
 def toggle(button_text):
     if button_text.get() == "Pause":
+        t.pause()
         button_text.set("Resume")
 
     else:
+        t.resume()
         button_text.set("Pause")
