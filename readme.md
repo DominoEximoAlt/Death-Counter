@@ -8,8 +8,6 @@ A simple tool to track the number of player deaths in challenging, Souls-like ga
 - **Game Selector:** Easily choose which game to track from a list of supported titles.
 - **Overlay Support:** Display death count and timer as an overlay on your screen.
 - **Persistent Data:** Death counts and session time are saved between runs.
-- **Customizable:** Configure capture monitor, detection thresholds, and other settings via `.env` file.
-- **Extensible:** Easily add support for new games by updating templates and detection logic.
 
 ## Tech Stack
 
@@ -23,23 +21,8 @@ A simple tool to track the number of player deaths in challenging, Souls-like ga
 
 ## Getting Started
 
-1. Clone the repository.
-2. Install dependencies:  
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Configure your `.env` file in `deathcounter/`.
-4. Run the main script:  
-   ```bash
-   python deathcounter/main.py
-   ```
 
 ## Supported Games
 
-- Dark Souls
+- Dark Souls REMASTERED
 - Lords of the Fallen 2  
-*(Add more by updating templates in `deathcounter/assets/` and detection logic.)*
-
-## License
-
-MIT License
