@@ -1,10 +1,12 @@
 import cv2
+import sys, os
 import numpy as np
 
 def detect_death(currentFrame, game_name):
     img_rgb = currentFrame
     assert img_rgb is not None, "file could not be read, check with os.path.exists()"
-    template = cv2.imread(f"deathcounter/assets/{game_name}_cropped_template.png")
+    template_path = resource_path(f"deathcounter\\assets\\{game_name}_cropped_template.png")
+    template = cv2.imread(template_path)
     assert template is not None, "file could not be read, check with os.path.exists()"
     ##w, h = template.shape[::-1]
 
@@ -44,3 +46,10 @@ def detect_death(currentFrame, game_name):
     cv2.destroyAllWindows()
     return good.__len__()
     
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)

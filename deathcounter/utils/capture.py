@@ -13,8 +13,11 @@ import ctypes
     
 load_dotenv()
 
-def capture_screen(game_name, selected_monitor):
 
+
+def capture_screen(game_name, selected_monitor):
+    was_dead = False
+    match_avg = []
     user32 = ctypes.windll.user32
     screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     t = Timer.get_instance(game_name)
@@ -33,6 +36,10 @@ def capture_screen(game_name, selected_monitor):
         }
         prev_hash = None
         while True:
+            if match_avg.__len__() >1:
+                if was_dead and (sum(match_avg) / len(match_avg)) <= 10:
+                    was_dead = False
+            
             last_gc = time.time()
             # Get raw pixels from the screen, save it to a Numpy array
             frame = np.array(sct.grab(monitor))
@@ -40,29 +47,21 @@ def capture_screen(game_name, selected_monitor):
             if new_hash != prev_hash:
                 prev_hash = new_hash
                 match_value = detect_death(frame, game_name)
+                match_avg.append(match_value)
+                if len(match_avg) > 10:
+                    match_avg.pop(0)
+
                 del frame
 
                 if time.time() - last_gc > 10:
                     gc.collect()
                     last_gc = time.time()
 
-                if match_value > 28 and t.is_running:
+                if match_value > 128 and t.is_running and not was_dead:
                     add_death()
-                    time.sleep(14)  # to avoid multiple detections in a short time
-
-            
-            # Display the picture
-            #cv2.imshow("OpenCV/Numpy normal", frame)
+                    was_dead = True
+                
             print(match_value)
-            # Display the picture in grayscale
-            #cv2.imshow('OpenCV/Numpy grayscale',
-            #            cv2.cvtColor(frame, cv2.COLOR_BGRA2GRAY))
-
-
-
-            # Press "q" to quit
-            #if cv2.waitKey(25) & 0xFF == ord("q"):
-            #    cv2.destroyAllWindows()
-            #    break
+            
 
 

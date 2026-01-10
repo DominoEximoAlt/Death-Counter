@@ -29,10 +29,16 @@ def start_overlay(game_name, selected_monitor):
     counter = t.get_deaths()
     time = t.get_elapsed()
     root.title("Death Counter Overlay")
-    x="10"     
-    y="10" 
+    screen_w = root.winfo_screenwidth()
+    screen_h = root.winfo_screenheight()
+    win_w = root.winfo_width()
+    win_h = root.winfo_height()
 
-    root.geometry(f'250x150+{x}+{y}') 
+    x = screen_w - win_w - 200
+    y = 150  # center vertically
+    print(  f'Screen Width: {x}, Screen Height: {y}')
+
+    root.geometry(f'+{x}+{y}') 
 
     # to remove the titlebar     
     root.overrideredirect(True) 
@@ -48,9 +54,10 @@ def start_overlay(game_name, selected_monitor):
     button_text = tkinter.StringVar(value="Resume")
   
 
-    toggle_button = Button(root, textvariable=button_text,command=lambda: toggle(button_text), bg="#000001",font=("Arial",20), fg="white",highlightbackground="black",activebackground="grey",overrelief="raised",)
+    toggle_button = Button(root,width= 6, height=1, textvariable=button_text,command=lambda: toggle(button_text), bg="#000001",font=("Arial",20), fg="white",highlightbackground="black",activebackground="grey",overrelief="raised",)
     toggle_button.pack(padx=20, pady=20, ipadx=10, ipady=5)
     root.wm_attributes("-topmost", 1)
+
 
     thread = threading.Thread(target=capture_screen, args=(game_name,selected_monitor,), daemon=True)
     thread.start()

@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from time import *
+import sys
+import os
 import mss
 
 def start_selector():
@@ -29,7 +31,8 @@ def start_selector():
     dropdown.pack(pady=5)
     dropdown2.pack(pady=5)
     ## Set theme
-    pop_up.tk.call("source", "deathcounter/assets/azure.tcl")
+    theme_path = resource_path("deathcounter/assets/azure.tcl")
+    pop_up.tk.call("source", theme_path)
     pop_up.tk.call("set_theme", "dark")
     def confirm_selection():
         selected_game = game_var.get()
@@ -39,9 +42,28 @@ def start_selector():
         pop_up.destroy()
         from utils.overlay import start_overlay
         start_overlay(game_exe, selected_monitor)
+    def start_new_run():
+        selected_game = game_var.get()
+        selected_monitor = monitor_var.get()[-1:]
+        global game_exe
+        game_exe = GAMES[selected_game][:-4]
+        pop_up.destroy()
+        from utils.state import initialize_state
+        initialize_state(game_name=game_exe)
+        from utils.overlay import start_overlay
+        start_overlay(game_exe, selected_monitor)
 
     pop_up.protocol('WM_DELETE_WINDOW', pop_up.destroy)
     confirm_button = ttk.Button(pop_up, text="Start", command=confirm_selection)
     confirm_button.pack(pady=10)
+    startNew_button = ttk.Button(pop_up, text="Start New", command=start_new_run)
+    startNew_button.pack(pady=10)
 
     pop_up.mainloop()
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
