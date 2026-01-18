@@ -25,9 +25,16 @@ jobs:
     - name: Install deps
       run: pip install -r deathcounter/requirements.txt
     
-    - name: Build
-      run: python -m PyInstaller --onedir --noconsole --add-data "deathcounter\assets;deathcounter/assets" --name "DeathCounter" deathcounter\main.py
-                
+    - name: PyInstaller Action
+      uses: Martin005/pyinstaller-action@v1.2.0
+      with:
+        spec: 'deathcounter/DeathCounter.spec'
+        entry-point: deathcounter/main.py
+        additional-data: "deathcounter/assets;deathcounter/assets"
+        name: DeathCounter
+        one-dir: true
+        noconsole: true
+        
     - name: Zip build
       run: |
         powershell Compress-Archive dist/DeathCounter DeathCounter_win.zip
