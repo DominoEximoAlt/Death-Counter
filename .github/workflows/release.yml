@@ -17,8 +17,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Set version
-      run: python deathcounter/scripts/write_version.py
+    - name: Set version.py from tag
+      shell: bash
+      run: |
+        echo "__version__ = '${GITHUB_REF_NAME#v}'" > deathcounter/version.py
+        cat deathcounter/version.py
     
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0
