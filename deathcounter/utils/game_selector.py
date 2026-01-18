@@ -94,7 +94,7 @@ def maybe_prompt_update(pop_up):
             "Update available",
             f"A new version ({latest}) is available.\n\nUpdate now?"
         ):
-            download_and_update(url)    
+            download_and_update(url,pop_up)    
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -121,7 +121,7 @@ def check_for_update():
 
 
 
-def download_and_update(zip_url):
+def download_and_update(zip_url, pop_up):
     tmp_dir = tempfile.mkdtemp()
     zip_path = os.path.join(tmp_dir, "update.zip")
     print(zip_path)
@@ -134,15 +134,16 @@ def download_and_update(zip_url):
     extract_dir = os.path.join(tmp_dir, "new")
     zipfile.ZipFile(zip_path).extractall(extract_dir)
 
-    launch_updater(extract_dir)
+    launch_updater(extract_dir, pop_up)
 
-def launch_updater(new_dir):
+def launch_updater(new_dir, pop_up):
     current_dir = os.path.dirname(sys.executable)
+    print(sys.executable)
     print(current_dir)
     updater = f"""
     timeout /t 1 > nul
     rmdir /s /q "{current_dir}"
-    move "{new_dir}\\DeathCounter" "{current_dir}"
+    move "{new_dir}\\DeathCounter\\*" "{current_dir}"
     start "" "{current_dir}\\DeathCounter.exe"
     """
 
@@ -151,7 +152,9 @@ def launch_updater(new_dir):
         f.write(updater)
 
     subprocess.Popen(bat_path, shell=True)
-    sys.exit(0)
+    
+    sys.exit()
+    
 
 def start_update_check(root):
     threading.Thread(
