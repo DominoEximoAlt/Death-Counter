@@ -14,9 +14,14 @@ from packaging.version import Version
 REPO = "DominoEximoAlt/Death-Counter"
 API_URL = f"https://api.github.com/repos/{REPO}/releases/latest"
 
+
+
 def get_version():
         path = resource_path("deathcounter/version.txt")
-        
+        if getattr(sys, "frozen", False):
+            print("MEIPASS contents:")
+            for root, dirs, files in os.walk(sys._MEIPASS):
+                print(root, files)
         try:
             with open(path, "r", encoding="utf-8") as f:
                 return f.read().strip()
