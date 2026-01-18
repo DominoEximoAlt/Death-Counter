@@ -75,3 +75,4 @@ Desktop.ini
 assets/
 death_data.json
 .env
+.testenv
