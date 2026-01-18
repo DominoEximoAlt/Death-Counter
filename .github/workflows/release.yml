@@ -24,7 +24,7 @@ jobs:
       run: pip install -r deathcounter/requirements.txt
       
     - name: Build
-      run: python -m PyInstaller --onedir --noconsole --add-data "C:\Programming\Death_Counter\deathcounter\assets;deathcounter/assets" --name "DeathCounter" C:\Programming\Death_Counter\deathcounter\main.py
+      run: pyinstaller --onedir --noconsole --add-data "C:\Programming\Death_Counter\deathcounter\assets;deathcounter/assets" --name "DeathCounter" C:\Programming\Death_Counter\deathcounter\main.py
 
     - name: Zip build
       run: |
