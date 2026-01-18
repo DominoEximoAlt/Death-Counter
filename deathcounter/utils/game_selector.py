@@ -1,12 +1,25 @@
 from tkinter import *
 from tkinter import ttk
 from time import *
+from tkinter import messagebox
+import tempfile, zipfile, shutil
+import subprocess, sys, time
 import sys
 import os
 import mss
+import requests
+import threading
+from packaging.version import Version
+from utils.version import __version__
+
+REPO = "DominoEximoAlt/Death-Counter"
+API_URL = f"https://api.github.com/repos/{REPO}/releases/latest"
 
 def start_selector():
     pop_up = Tk()
+
+    thread = threading.Thread(target=check_for_update, daemon=True)
+    thread.start()
 
     GAMES = {
         "Lords of the Fallen": "LOTF2-Win64-Shipping.exe",
@@ -34,6 +47,9 @@ def start_selector():
     theme_path = resource_path("deathcounter/assets/azure.tcl")
     pop_up.tk.call("source", theme_path)
     pop_up.tk.call("set_theme", "dark")
+
+    
+
     def confirm_selection():
         selected_game = game_var.get()
         selected_monitor = monitor_var.get()[-1:]
@@ -42,6 +58,7 @@ def start_selector():
         pop_up.destroy()
         from utils.overlay import start_overlay
         start_overlay(game_exe, selected_monitor)
+
     def start_new_run():
         selected_game = game_var.get()
         selected_monitor = monitor_var.get()[-1:]
@@ -60,6 +77,21 @@ def start_selector():
     startNew_button.pack(pady=10)
 
     pop_up.mainloop()
+    
+    
+
+def maybe_prompt_update(pop_up):
+        result = check_for_update()
+        if not result:
+            return
+
+        latest, url = result
+
+        if messagebox.askyesno(
+            "Update available",
+            f"A new version ({latest}) is available.\n\nUpdate now?"
+        ):
+            download_and_update(url)    
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -67,3 +99,60 @@ def resource_path(relative_path):
     else:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
+
+def check_for_update():
+    try:
+        r = requests.get(API_URL, timeout=3)
+        print(r)
+        r.raise_for_status()
+        data = r.json()
+        latest = data["tag_name"].lstrip("v")
+        if Version(latest) > Version(__version__):
+            asset = data["assets"][0]["browser_download_url"]
+            return latest, asset
+
+    except Exception:
+        return None
+
+    return None
+
+
+
+def download_and_update(zip_url):
+    tmp_dir = tempfile.mkdtemp()
+    zip_path = os.path.join(tmp_dir, "update.zip")
+
+    with requests.get(zip_url, stream=True) as r:
+        r.raise_for_status()
+        with open(zip_path, "wb") as f:
+            for chunk in r.iter_content(8192):
+                f.write(chunk)
+
+    extract_dir = os.path.join(tmp_dir, "new")
+    zipfile.ZipFile(zip_path).extractall(extract_dir)
+
+    launch_updater(extract_dir)
+
+def launch_updater(new_dir):
+    current_dir = os.path.dirname(sys.executable)
+
+    updater = f"""
+    timeout /t 1 > nul
+    rmdir /s /q "{current_dir}"
+    move "{new_dir}\\DeathCounter" "{current_dir}"
+    start "" "{current_dir}\\DeathCounter.exe"
+    """
+
+    bat_path = os.path.join(os.getenv("TEMP"), "deathcounter_update.bat")
+    with open(bat_path, "w") as f:
+        f.write(updater)
+
+    subprocess.Popen(bat_path, shell=True)
+    sys.exit(0)
+
+def start_update_check(root):
+    threading.Thread(
+        target=maybe_prompt_update,
+        args=(root,),
+        daemon=True
+    ).start()
