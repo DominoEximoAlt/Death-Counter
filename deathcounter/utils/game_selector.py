@@ -10,11 +10,24 @@ import mss
 import requests
 import threading
 from packaging.version import Version
-from deathcounter.utils.version import __version__
 
 REPO = "DominoEximoAlt/Death-Counter"
 API_URL = f"https://api.github.com/repos/{REPO}/releases/latest"
 
+def get_version():
+        if getattr(sys, "frozen", False):
+            base = sys._MEIPASS
+        else:
+            base = os.path.dirname(__file__)
+
+        path = os.path.join(base, "version.txt")
+
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        except Exception:
+            return "unknown"
+        
 def start_selector():
     pop_up = Tk()
 
@@ -76,7 +89,7 @@ def start_selector():
     confirm_button.pack(pady=10)
     startNew_button = ttk.Button(pop_up, text="Start New", command=start_new_run)
     startNew_button.pack(pady=10)
-    Label(pop_up, text=f"Version: {__version__} | Developed by DominoEximoAlt", font=("Arial", 8)).pack(pady=10)
+    Label(pop_up, text=f"Version: {get_version()} | Developed by DominoEximoAlt", font=("Arial", 8)).pack(pady=10)
 
     pop_up.mainloop()
     
@@ -110,7 +123,7 @@ def check_for_update():
         r.raise_for_status()
         data = r.json()
         latest = data["tag_name"].lstrip("v")
-        if Version(latest) > Version(__version__):
+        if Version(latest) > Version(get_version()):
             asset = data["assets"][0]["browser_download_url"]
             return latest, asset
 
