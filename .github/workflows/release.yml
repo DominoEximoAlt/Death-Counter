@@ -23,9 +23,6 @@ jobs:
     - name: Install deps
       run: pip install -r deathcounter/requirements.txt
       
-    - name: Set version
-      run: python scripts/write_version.py
-      
     - name: Build
       run: python -m PyInstaller --onedir --noconsole --add-data "C:\Programming\Death_Counter\deathcounter\assets;deathcounter/assets" --name "DeathCounter" C:\Programming\Death_Counter\deathcounter\main.py
 
