@@ -15,15 +15,11 @@ REPO = "DominoEximoAlt/Death-Counter"
 API_URL = f"https://api.github.com/repos/{REPO}/releases/latest"
 
 def get_version():
-        if getattr(sys, "frozen", False):
-            base = sys._MEIPASS
-        else:
-            base = os.path.dirname(__file__)
-
-        path = os.path.join(base, "version.txt")
-
+        path = resource_path("deathcounter/version.txt")
+        
         try:
             with open(path, "r", encoding="utf-8") as f:
+                print(f.read().strip())
                 return f.read().strip()
         except Exception:
             return "unknown"
