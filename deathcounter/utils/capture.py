@@ -44,14 +44,14 @@ def capture_screen(game_name, selected_monitor):
             # Get raw pixels from the screen, save it to a Numpy array
             frame = np.array(sct.grab(monitor))
             new_hash = hashlib.md5(frame).hexdigest()
-            match_value = detect_death(frame, game_name)
-            match_avg.append(match_value)
-            if len(match_avg) > 10:
-                match_avg.pop(0)
+            
                 
             if new_hash != prev_hash:
                 prev_hash = new_hash
-
+                match_value = detect_death(frame, game_name)
+                match_avg.append(match_value)
+                if len(match_avg) > 10:
+                    match_avg.pop(0)
                 del frame
 
                 if time.time() - last_gc > 10:
