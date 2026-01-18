@@ -9,7 +9,7 @@ a = Analysis(
            ('deathcounter/assets/theme/dark/*', 'deathcounter/assets/theme/dark'),
            ('deathcounter/assets/theme/light/*', 'deathcounter/assets/theme/light'),
            ('deathcounter/assets/LOTF2-Win64-Shipping_cropped_template.png', 'deathcounter/assets'),
-           ('deathcounter/version.txt', '.')],
+           ('deathcounter/version.txt', 'deathcounter')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
