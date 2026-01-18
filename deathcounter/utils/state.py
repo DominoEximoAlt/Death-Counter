@@ -1,6 +1,6 @@
 import os, json
 from appdirs import user_data_dir
-from utils.game_selector import game_exe
+from deathcounter.utils.game_selector import game_exe
 
 APP_NAME = "DeathCounter"
 APP_AUTHOR = "SaveData"

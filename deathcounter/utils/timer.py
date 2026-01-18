@@ -1,6 +1,6 @@
 import time
-from utils.state import load_state, save_state
-from utils.game_selector import game_exe as game_name
+from deathcounter.utils.state import load_state, save_state
+from deathcounter.utils.game_selector import game_exe as game_name
 
 class Timer:
     is_running = False

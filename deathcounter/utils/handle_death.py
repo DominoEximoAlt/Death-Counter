@@ -1,5 +1,5 @@
-from utils.game_selector import game_exe
-from utils.timer import Timer
+from deathcounter.utils.game_selector import game_exe
+from deathcounter.utils.timer import Timer
 
 t = Timer.get_instance(game_exe=game_exe)
 #DEATH METHODS

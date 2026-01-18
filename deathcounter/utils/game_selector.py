@@ -10,7 +10,7 @@ import mss
 import requests
 import threading
 from packaging.version import Version
-from utils.version import __version__
+from deathcounter.utils.version import __version__
 
 REPO = "DominoEximoAlt/Death-Counter"
 API_URL = f"https://api.github.com/repos/{REPO}/releases/latest"
@@ -57,7 +57,7 @@ def start_selector():
         global game_exe
         game_exe = GAMES[selected_game][:-4]
         pop_up.destroy()
-        from utils.overlay import start_overlay
+        from deathcounter.utils.overlay import start_overlay
         start_overlay(game_exe, selected_monitor)
 
     def start_new_run():
@@ -66,9 +66,9 @@ def start_selector():
         global game_exe
         game_exe = GAMES[selected_game][:-4]
         pop_up.destroy()
-        from utils.state import initialize_state
+        from deathcounter.utils.state import initialize_state
         initialize_state(game_name=game_exe)
-        from utils.overlay import start_overlay
+        from deathcounter.utils.overlay import start_overlay
         start_overlay(game_exe, selected_monitor)
 
     pop_up.protocol('WM_DELETE_WINDOW', pop_up.destroy)

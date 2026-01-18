@@ -5,8 +5,8 @@ import time
 import hashlib
 import numpy as np
 
-from utils.handle_death import add_death
-from utils.timer import Timer
+from deathcounter.utils.handle_death import add_death
+from deathcounter.utils.timer import Timer
 from .detector import detect_death
 from dotenv import load_dotenv
 import ctypes
