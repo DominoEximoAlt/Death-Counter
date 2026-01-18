@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Set version
-      run: python scripts/write_version.py
+      run: python deathcounter/scripts/write_version.py
     
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0
