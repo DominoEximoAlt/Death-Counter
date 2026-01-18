@@ -75,4 +75,3 @@ Desktop.ini
 death_data.json
 .env
 testenv/
-deathcounter/utils/version.py

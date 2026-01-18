@@ -16,10 +16,15 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Set version.py from tag
-      shell: bash
+      shell: pwsh
       run: |
-        echo "__version__ = '${GITHUB_REF_NAME#v}'" > deathcounter/utils/version.py
-        cat deathcounter/utils/version.py
+        $tag = "${{ github.ref_name }}"
+        if ($tag -like 'v*') {
+            $version = $tag.TrimStart('v')
+        } else {
+            $version = 'dev'
+        }
+        Set-Content deathcounter/utils/version.py "__version__ = `"$version`""
 
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0
