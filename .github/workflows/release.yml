@@ -17,12 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Modify File Content
-      uses: jaywcjlove/github-action-modify-file-content@v2.0.4
-      with:
-        path: 'deathcounter/utils/version.py'
-        body: '__version__ = "${{ github.ref_name }}"'
-        token: ${{ github.token }}
+    - name: Set version
+      run: python deathcounter/scripts/write_version.py
     
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0

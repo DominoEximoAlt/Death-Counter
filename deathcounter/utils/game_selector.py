@@ -143,7 +143,7 @@ def launch_updater(new_dir, pop_up):
     updater = f"""
     timeout /t 1 > nul
     rmdir /s /q "{current_dir}"
-    move "{new_dir}\\DeathCounter\\*" "{current_dir}"
+    move "{new_dir}\\DeathCounter\\" "{current_dir}"
     start "" "{current_dir}\\DeathCounter.exe"
     """
 
