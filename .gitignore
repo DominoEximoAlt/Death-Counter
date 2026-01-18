@@ -72,7 +72,6 @@ Desktop.ini
 *.old
 *.orig
 *.save
-assets/
 death_data.json
 .env
 testenv/
