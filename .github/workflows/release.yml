@@ -27,7 +27,7 @@ jobs:
         spec: 'DeathCounter.spec'
         requirements: 'deathcounter/requirements.txt'
         upload_exe_with_name: DeathCounter
-        options: --onedir, --noconsole, --name DeathCounter
+        options: --onedir, --name DeathCounter
 
         
     - name: Zip build
