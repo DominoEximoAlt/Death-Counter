@@ -23,10 +23,6 @@ def start_selector():
 
     GAMES = {
         "Lords of the Fallen": "LOTF2-Win64-Shipping.exe",
-        "Dark Souls 3": "DarkSoulsIII.exe",
-        "Dark Souls REMASTERED": "DarkSoulsRemastered.exe",
-        "Sekiro": "sekiro.exe",
-        "Elden Ring": "eldenring.exe",
     }
 
     pop_up.title("Select Game")
