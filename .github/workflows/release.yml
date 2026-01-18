@@ -6,15 +6,15 @@ on:
         - "v*"
   release:
     types: [published]
-
-jobs:
   
+jobs:
   build:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
-
+    - uses: Martin005/pyinstaller-action@v1.2.0
+    
     - name: Set version
       run: |
         echo __version__ = \"${{ github.ref_name }}\" > deathcounter/version.py
@@ -22,10 +22,11 @@ jobs:
 
     - name: Install deps
       run: pip install -r deathcounter/requirements.txt
-      
+    
     - name: Build
-      run: pyinstaller --onedir --noconsole --add-data "C:\Programming\Death_Counter\deathcounter\assets;deathcounter/assets" --name "DeathCounter" C:\Programming\Death_Counter\deathcounter\main.py
-
+      run: Python -m pyinstaller --onedir --noconsole --add-data "deathcounter\assets;deathcounter/assets" --name "DeathCounter" deathcounter\main.py
+      
+            
     - name: Zip build
       run: |
         powershell Compress-Archive dist/DeathCounter DeathCounter_win.zip
