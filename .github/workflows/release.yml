@@ -21,7 +21,7 @@ jobs:
       shell: bash
 
     - name: Install deps
-      run: pip install -r requirements.txt
+      run: pip install -r deathcounter/requirements.txt
       
     - name: Set version
       run: python scripts/write_version.py
