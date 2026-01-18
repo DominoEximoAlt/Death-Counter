@@ -5,7 +5,7 @@ a = Analysis(
     ['deathcounter\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[('deathcounter\\assets', 'deathcounter/assets')],
+    datas=[('deathcounter/assets', 'deathcounter/assets')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
