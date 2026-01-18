@@ -1,0 +1,39 @@
+name: Build & Release
+
+on:
+  push:
+      tags:
+        - "v*"
+  release:
+    types: [published]
+
+jobs:
+  
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set version
+      run: |
+        echo __version__ = \"${{ github.ref_name }}\" > deathcounter/version.py
+      shell: bash
+
+    - name: Install deps
+      run: pip install -r requirements.txt
+      
+    - name: Set version
+      run: python scripts/write_version.py
+      
+    - name: Build
+      run: python -m PyInstaller --onedir --noconsole --add-data "C:\Programming\Death_Counter\deathcounter\assets;deathcounter/assets" --name "DeathCounter" C:\Programming\Death_Counter\deathcounter\main.py
+
+    - name: Zip build
+      run: |
+        powershell Compress-Archive dist/DeathCounter DeathCounter_win.zip
+
+    - name: Upload asset
+      uses: softprops/action-gh-release@v1
+      with:
+        files: DeathCounter_win.zip

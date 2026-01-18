@@ -13,8 +13,6 @@ import ctypes
     
 load_dotenv()
 
-
-
 def capture_screen(game_name, selected_monitor):
     was_dead = False
     match_avg = []
