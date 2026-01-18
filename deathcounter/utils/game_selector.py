@@ -20,6 +20,8 @@ def start_selector():
 
     thread = threading.Thread(target=check_for_update, daemon=True)
     thread.start()
+    thread2 = threading.Thread(target=maybe_prompt_update, args=(pop_up,), daemon=True)
+    thread2.start()
 
     GAMES = {
         "Lords of the Fallen": "LOTF2-Win64-Shipping.exe",
@@ -28,7 +30,7 @@ def start_selector():
     pop_up.title("Select Game")
     pop_up.eval('tk::PlaceWindow . center')
     Label(pop_up, text="Choose a game to track:", font=("Arial", 12)).pack(pady=10)
-
+    
     monitors = mss.mss().monitors.__len__() - 1
     monitor_names = [f"Monitor {i}" for i in range(1, monitors + 1)]
     #monitor_names = [f"Monitor {i}" for i in monitors if i != 0]
@@ -74,6 +76,7 @@ def start_selector():
     confirm_button.pack(pady=10)
     startNew_button = ttk.Button(pop_up, text="Start New", command=start_new_run)
     startNew_button.pack(pady=10)
+    Label(pop_up, text=f"Version: {__version__} | Developed by DominoEximoAlt", font=("Arial", 8)).pack(pady=10)
 
     pop_up.mainloop()
     
@@ -81,11 +84,12 @@ def start_selector():
 
 def maybe_prompt_update(pop_up):
         result = check_for_update()
+        
         if not result:
             return
 
         latest, url = result
-
+        print(url)
         if messagebox.askyesno(
             "Update available",
             f"A new version ({latest}) is available.\n\nUpdate now?"
@@ -120,7 +124,7 @@ def check_for_update():
 def download_and_update(zip_url):
     tmp_dir = tempfile.mkdtemp()
     zip_path = os.path.join(tmp_dir, "update.zip")
-
+    print(zip_path)
     with requests.get(zip_url, stream=True) as r:
         r.raise_for_status()
         with open(zip_path, "wb") as f:
@@ -134,7 +138,7 @@ def download_and_update(zip_url):
 
 def launch_updater(new_dir):
     current_dir = os.path.dirname(sys.executable)
-
+    print(current_dir)
     updater = f"""
     timeout /t 1 > nul
     rmdir /s /q "{current_dir}"
