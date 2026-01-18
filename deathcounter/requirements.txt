@@ -7,4 +7,10 @@ python-dotenv
 requests
 pyinstaller
 mss
-opencv-python
+gc
+time
+hashlib
+threading
+os
+json
+appdirs
