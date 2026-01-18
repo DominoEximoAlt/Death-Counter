@@ -44,7 +44,7 @@ Desktop.ini
 .DS_Store
 
 # Images and binary files
-*.png
+
 *.jpg
 *.jpeg
 *.gif
