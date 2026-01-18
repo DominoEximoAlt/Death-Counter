@@ -13,7 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: Martin005/pyinstaller-action@v1.2.0
     
     - name: Set version
       run: |
@@ -25,8 +24,7 @@ jobs:
     
     - name: Build
       run: Python -m pyinstaller --onedir --noconsole --add-data "deathcounter\assets;deathcounter/assets" --name "DeathCounter" deathcounter\main.py
-      
-            
+                
     - name: Zip build
       run: |
         powershell Compress-Archive dist/DeathCounter DeathCounter_win.zip
