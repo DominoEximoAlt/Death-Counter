@@ -28,9 +28,8 @@ jobs:
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0
       with:
-        spec: 'deathcounter/DeathCounter.spec'
+        spec: 'DeathCounter.spec'
         requirements: 'deathcounter/requirements.txt'
-        additional-data: "deathcounter/assets;deathcounter/assets"
         upload_exe_with_name: DeathCounter
         options: --onedir, --noconsole, --name DeathCounter
 
