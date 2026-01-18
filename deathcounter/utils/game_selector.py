@@ -19,7 +19,6 @@ def get_version():
         
         try:
             with open(path, "r", encoding="utf-8") as f:
-                print(f.read().strip())
                 return f.read().strip()
         except Exception:
             return "unknown"
@@ -85,8 +84,8 @@ def start_selector():
     confirm_button.pack(pady=10)
     startNew_button = ttk.Button(pop_up, text="Start New", command=start_new_run)
     startNew_button.pack(pady=10)
-    Label(pop_up, text=f"Version: {get_version()} | Developed by DominoEximoAlt", font=("Arial", 8)).pack(pady=10)
-
+    Label(pop_up, text=f"Version:" + get_version() + " | Developed by DominoEximoAlt", font=("Arial", 8)).pack(pady=10)
+    print(get_version())
     pop_up.mainloop()
     
     
@@ -98,7 +97,6 @@ def maybe_prompt_update(pop_up):
             return
 
         latest, url = result
-        print(url)
         if messagebox.askyesno(
             "Update available",
             f"A new version ({latest}) is available.\n\nUpdate now?"
@@ -115,7 +113,6 @@ def resource_path(relative_path):
 def check_for_update():
     try:
         r = requests.get(API_URL, timeout=3)
-        print(r)
         r.raise_for_status()
         data = r.json()
         latest = data["tag_name"].lstrip("v")
@@ -133,7 +130,6 @@ def check_for_update():
 def download_and_update(zip_url, pop_up):
     tmp_dir = tempfile.mkdtemp()
     zip_path = os.path.join(tmp_dir, "update.zip")
-    print(zip_path)
     with requests.get(zip_url, stream=True) as r:
         r.raise_for_status()
         with open(zip_path, "wb") as f:
@@ -147,8 +143,6 @@ def download_and_update(zip_url, pop_up):
 
 def launch_updater(new_dir, pop_up):
     current_dir = os.path.dirname(sys.executable)
-    print(sys.executable)
-    print(current_dir)
     updater = f"""
     timeout /t 1 > nul
     rmdir /s /q "{current_dir}"
