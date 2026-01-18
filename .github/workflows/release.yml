@@ -21,9 +21,6 @@ jobs:
       run: |
         echo __version__ = \"${{ github.ref_name }}\" > deathcounter/utils/version.py
       shell: bash
-
-    - name: Install deps
-      run: pip install -r deathcounter/requirements.txt
     
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0
