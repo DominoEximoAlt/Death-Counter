@@ -5,3 +5,4 @@ psutil
 arrow
 python-dotenv
 requests
+pyinstaller
