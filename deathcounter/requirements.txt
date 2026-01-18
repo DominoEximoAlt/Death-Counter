@@ -7,9 +7,4 @@ python-dotenv
 requests
 pyinstaller
 mss
-time
-hashlib
-threading
-os
-json
 appdirs
