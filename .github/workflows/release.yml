@@ -25,15 +25,15 @@ jobs:
     - name: Install deps
       run: pip install -r deathcounter/requirements.txt
     
-    - name: PyInstaller Action
-      uses: Martin005/pyinstaller-action@v1.2.0
+    - name: Versatile PyInstaller
+      uses: sayyid5416/pyinstaller@v1.8.0
       with:
         spec: 'deathcounter/DeathCounter.spec'
-        entry-point: deathcounter/main.py
+        requirements: 'deathcounter/requirements.txt'
         additional-data: "deathcounter/assets;deathcounter/assets"
-        name: DeathCounter
-        one-dir: true
-        noconsole: true
+        upload_exe_with_name: DeathCounter
+        options: --onedir, --noconsole, --name DeathCounter
+
         
     - name: Zip build
       run: |

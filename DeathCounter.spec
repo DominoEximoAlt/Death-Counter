@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['C:\\Programming\\Death_Counter\\deathcounter\\main.py'],
+    ['deathcounter\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Programming\\Death_Counter\\deathcounter\\assets', 'deathcounter/assets')],
+    datas=[('deathcounter\\assets', 'deathcounter/assets')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
