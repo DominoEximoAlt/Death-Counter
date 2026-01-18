@@ -15,16 +15,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Show version file
-      run: |
-        echo "Version file contents:"
-        cat deathcounter/version.txt
 
     - name: Set version
       shell: pwsh
       run: |
         $version = "${{ github.ref_name }}".TrimStart('v')
         Set-Content deathcounter/version.txt $version
+        
+    - name: Show version file
+      run: |
+        echo "Version file contents:"
+        cat deathcounter/version.txt
 
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0
