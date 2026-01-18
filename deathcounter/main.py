@@ -1,5 +1,5 @@
 from utils.game_selector import start_selector
-
+from deathcounter.utils.version import __version__
 
 from dotenv import load_dotenv
 

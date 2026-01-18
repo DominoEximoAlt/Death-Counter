@@ -3,13 +3,13 @@
 
 a = Analysis(
     ['deathcounter\\main.py'],
-    pathex=[],
+    pathex=['.'],
     binaries=[],
     datas=[('deathcounter/assets', 'deathcounter/assets'),
            ('deathcounter/assets/theme/dark/*', 'deathcounter/assets/theme/dark'),
            ('deathcounter/assets/theme/light/*', 'deathcounter/assets/theme/light'),
            ('deathcounter/assets/LOTF2-Win64-Shipping_cropped_template.png', 'deathcounter/assets')],
-    hiddenimports=[],
+    hiddenimports=['deathcounter.utils.version'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
