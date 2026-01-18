@@ -6,3 +6,4 @@ arrow
 python-dotenv
 requests
 pyinstaller
+mss
