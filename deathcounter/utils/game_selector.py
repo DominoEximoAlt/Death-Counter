@@ -44,7 +44,10 @@ def start_selector():
     dropdown.pack(pady=5)
     dropdown2.pack(pady=5)
     ## Set theme
-    theme_path = resource_path("deathcounter/assets/azure.tcl")
+    try:
+        theme_path = resource_path("deathcounter/assets/azure.tcl")
+    except Exception:
+        theme_path = resource_path("assets/azure.tcl")
     pop_up.tk.call("source", theme_path)
     pop_up.tk.call("set_theme", "dark")
 
