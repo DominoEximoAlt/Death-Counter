@@ -20,9 +20,9 @@ jobs:
     - name: Set version.py from tag
       shell: bash
       run: |
-        echo "__version__ = '${GITHUB_REF_NAME#v}'" > deathcounter/version.py
-        cat deathcounter/version.py
-    
+        echo "__version__ = '${GITHUB_REF_NAME#v}'" > deathcounter/utils/version.py
+        cat deathcounter/utils/version.py
+
     - name: Versatile PyInstaller
       uses: sayyid5416/pyinstaller@v1.8.0
       with:
