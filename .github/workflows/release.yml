@@ -45,7 +45,7 @@ jobs:
         
     - name: Zip build
       run: |
-        powershell Compress-Archive dist/DeathCounter DeathCounter_win.zip
+        powershell Compress-Archive dist DeathCounter_win.zip
 
     - name: Upload asset
       uses: softprops/action-gh-release@v2
