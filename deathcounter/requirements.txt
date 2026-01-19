@@ -8,6 +8,5 @@ requests
 pyinstaller
 mss
 appdirs
-subprocess
 shutil
 stat
