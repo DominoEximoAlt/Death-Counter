@@ -22,16 +22,19 @@ jobs:
         requirements: 'deathcounter/requirements.txt'
         options: --onedir, --clean, --noconfirm
 
+    - name: Copy DeathCounter to release
+      run: |
+        mkdir release
+        xcopy dist\DeathCounter release\DeathCounter /E /I
+
     - name: Build Updater
       uses: sayyid5416/pyinstaller@v1.8.0
       with:
         spec: 'updater.spec'
         options: --onefile, --clean, --noconfirm
 
-    - name: Create release directory
+    - name: Copy Updater to release
       run: |
-        mkdir release
-        xcopy dist\DeathCounter release\DeathCounter /E /I
         xcopy dist\updater release\updater /E /I
 
     - name: Package and upload release
