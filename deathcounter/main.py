@@ -1,5 +1,5 @@
 import sys
-from utils.game_selector import start_selector
+from deathcounter.utils.game_selector import start_selector
 from dotenv import load_dotenv
       
 if __name__ == "__main__":
