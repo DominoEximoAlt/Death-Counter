@@ -22,6 +22,11 @@ jobs:
         requirements: 'deathcounter/requirements.txt'
         options: --onedir, --clean, --noconfirm
 
+    - name: 'add build to release'
+      run: |
+        mkdir release
+        xcopy dist\DeathCounter release\DeathCounter /E /I
+
     
     - name: Build updater
       uses: sayyid5416/pyinstaller@v1.8.0
@@ -37,7 +42,6 @@ jobs:
         dir dist
 
         mkdir release
-        xcopy dist\DeathCounter release\DeathCounter /E /I
         xcopy dist\updater release\updater /E /I
 
         powershell Compress-Archive -Path release\* -DestinationPath DeathCounter_win.zip
