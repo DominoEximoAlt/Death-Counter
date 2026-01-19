@@ -24,5 +24,4 @@ A simple tool to track the number of player deaths in challenging, Souls-like ga
 
 ## Supported Games
 
-- Dark Souls REMASTERED
 - Lords of the Fallen 2  
