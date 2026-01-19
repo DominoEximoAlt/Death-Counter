@@ -132,6 +132,8 @@ def check_for_update():
 
 
 def download_and_update(zip_url):
+    import stat
+    
     tmp_dir = tempfile.mkdtemp()
     zip_path = os.path.join(tmp_dir, "update.zip")
     with requests.get(zip_url, stream=True) as r:
@@ -153,8 +155,14 @@ def download_and_update(zip_url):
                 if relative_path:  # Skip if empty (directory entry)
                     target_path = os.path.join(death_counter_extract, relative_path)
                     os.makedirs(os.path.dirname(target_path), exist_ok=True)
-                    with zf.open(file) as source, open(target_path, "wb") as target:
-                        target.write(source.read())
+                    try:
+                        with zf.open(file) as source, open(target_path, "wb") as target:
+                            target.write(source.read())
+                        # Make file writable to avoid permission issues
+                        os.chmod(target_path, stat.S_IWRITE | stat.S_IREAD)
+                    except Exception as e:
+                        print(f"Warning: Could not extract {file}: {e}")
+
 
     launch_updater(death_counter_extract)
 
