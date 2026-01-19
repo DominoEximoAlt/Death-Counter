@@ -33,7 +33,7 @@ def start_selector():
 
     thread = threading.Thread(target=check_for_update, daemon=True)
     thread.start()
-    thread2 = threading.Thread(target=maybe_prompt_update, args=(pop_up,), daemon=True)
+    thread2 = threading.Thread(target=maybe_prompt_update, daemon=True)
     thread2.start()
 
     GAMES = {
@@ -162,8 +162,9 @@ def launch_updater(new_exe_path):
     
 def get_updater_path():
     exe_dir = os.path.dirname(get_current_exe_path())      # DeathCounter/
-    parent_dir = os.path.dirname(exe_dir)                  # ParentFolder/
-    return os.path.join(parent_dir, "updater", "updater.exe")
+    parent_dir = os.path.dirname(exe_dir)
+    parent_dir = os.path.dirname(parent_dir)                  # ParentFolder/
+    return os.path.join(parent_dir,"updater", "updater", "updater.exe")
 
 def get_current_exe_path():
     if getattr(sys, "frozen", False):
