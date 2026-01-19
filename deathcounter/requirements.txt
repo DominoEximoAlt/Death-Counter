@@ -8,5 +8,3 @@ requests
 pyinstaller
 mss
 appdirs
-shutil
-stat
