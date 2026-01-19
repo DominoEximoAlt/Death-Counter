@@ -25,17 +25,21 @@ jobs:
     - name: Copy DeathCounter to release
       run: |
         mkdir release
+        dir dist
         xcopy dist\DeathCounter release\DeathCounter /E /I /Y
+        dir release
 
     - name: Build Updater
       uses: sayyid5416/pyinstaller@v1.8.0
       with:
         spec: 'updater.spec'
-        options: --onedir, --noconfirm
+        options: --onedir, --clean, --noconfirm
 
     - name: Copy Updater to release
       run: |
+        dir dist
         xcopy dist\updater release\updater /E /I /Y
+        dir release
 
     - name: Package and upload release
       run: |
