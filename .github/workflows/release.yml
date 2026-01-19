@@ -24,8 +24,10 @@ jobs:
 
     - name: Save DeathCounter
       run: |
-        mkdir release
-        xcopy dist\DeathCounter release\DeathCounter /E /I /Y
+        New-Item -ItemType Directory -Path release -Force | Out-Null
+        Copy-Item -Path dist\DeathCounter -Destination release\DeathCounter -Recurse -Force
+        Write-Host "DeathCounter copied. Release folder:"
+        Get-ChildItem release
 
     - name: Build Updater
       uses: sayyid5416/pyinstaller@v1.8.0
@@ -35,7 +37,9 @@ jobs:
 
     - name: Copy Updater to release
       run: |
-        xcopy dist\updater release\updater /E /I /Y
+        Copy-Item -Path dist\updater -Destination release\updater -Recurse -Force
+        Write-Host "Updater copied. Release folder contents:"
+        Get-ChildItem release
 
     - name: Package and upload release
       run: |
