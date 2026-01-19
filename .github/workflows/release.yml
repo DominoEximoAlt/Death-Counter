@@ -22,12 +22,10 @@ jobs:
         requirements: 'deathcounter/requirements.txt'
         options: --onedir, --noconfirm
 
-    - name: Copy DeathCounter to release
+    - name: Save DeathCounter
       run: |
         mkdir release
-        dir dist
         xcopy dist\DeathCounter release\DeathCounter /E /I /Y
-        dir release
 
     - name: Build Updater
       uses: sayyid5416/pyinstaller@v1.8.0
@@ -37,13 +35,19 @@ jobs:
 
     - name: Copy Updater to release
       run: |
-        dir dist
         xcopy dist\updater release\updater /E /I /Y
-        dir release
 
     - name: Package and upload release
       run: |
-        powershell Compress-Archive -Path release\* -DestinationPath DeathCounter_win.zip
+        Write-Host "Contents of release folder:"
+        Get-ChildItem -Path release -Recurse | Select-Object FullName
+        
+        Write-Host "Creating zip file..."
+        $items = @(Get-ChildItem -Path release)
+        Compress-Archive -Path $items -DestinationPath DeathCounter_win.zip -Force
+        
+        Write-Host "Zip file created:"
+        Get-ChildItem DeathCounter_win.zip | Select-Object Name, Length
 
     - name: Upload release asset
       uses: softprops/action-gh-release@v2
