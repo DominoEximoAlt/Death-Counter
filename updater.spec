@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    [deathcounter\\updater.py'],
+    ['deathcounter\\updater.py'],
     pathex=[],
     binaries=[],
     datas=[],

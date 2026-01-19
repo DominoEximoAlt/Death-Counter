@@ -147,7 +147,10 @@ def download_and_update(zip_url):
 
 def launch_updater(new_exe_path):
     current_exe = sys.executable
-    updater_path = os.path.join(os.path.dirname(current_exe), "updater.exe")
+    updater_path = get_updater_path()
+
+    if not os.path.exists(updater_path):
+        raise RuntimeError(f"Updater not found: {updater_path}")
 
     subprocess.Popen([
         updater_path,
@@ -157,7 +160,17 @@ def launch_updater(new_exe_path):
 
     sys.exit(0)
     
+def get_updater_path():
+    exe_dir = os.path.dirname(get_current_exe_path())      # DeathCounter/
+    parent_dir = os.path.dirname(exe_dir)                  # ParentFolder/
+    return os.path.join(parent_dir, "updater", "updater.exe")
 
+def get_current_exe_path():
+    if getattr(sys, "frozen", False):
+        return sys.executable
+    else:
+        return os.path.abspath(sys.argv[0])
+    
 def start_update_check(root):
     threading.Thread(
         target=maybe_prompt_update,
