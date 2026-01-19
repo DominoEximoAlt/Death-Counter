@@ -134,17 +134,27 @@ def check_for_update():
 def download_and_update(zip_url):
     import stat
     
-    tmp_dir = tempfile.mkdtemp()
-    zip_path = os.path.join(tmp_dir, "update.zip")
+    # Get parent directory of current exe (where we'll extract to)
+    current_exe = sys.executable
+    current_dir = os.path.dirname(current_exe)
+    parent_dir = os.path.dirname(current_dir)
+    
+    # Extract to parent directory, not temp
+    extract_dir = os.path.join(parent_dir, "DeathCounter_update")
+    if os.path.exists(extract_dir):
+        shutil.rmtree(extract_dir)
+    os.makedirs(extract_dir, exist_ok=True)
+    
+    death_counter_extract = os.path.join(extract_dir, "DeathCounter")
+    os.makedirs(death_counter_extract, exist_ok=True)
+    
+    # Download zip
+    zip_path = os.path.join(extract_dir, "update.zip")
     with requests.get(zip_url, stream=True) as r:
         r.raise_for_status()
         with open(zip_path, "wb") as f:
             for chunk in r.iter_content(8192):
                 f.write(chunk)
-
-    extract_dir = os.path.join(tmp_dir, "new")
-    death_counter_extract = os.path.join(extract_dir, "DeathCounter")
-    os.makedirs(death_counter_extract, exist_ok=True)
     
     # Extract only the DeathCounter folder from the zip, flattening the structure
     with zipfile.ZipFile(zip_path) as zf:
@@ -152,18 +162,16 @@ def download_and_update(zip_url):
             if file.startswith("DeathCounter/DeathCounter/"):
                 # Remove the "DeathCounter/DeathCounter/" prefix to flatten
                 relative_path = file.replace("DeathCounter/DeathCounter/", "", 1)
-                if relative_path:  # Skip if empty (directory entry)
+                if relative_path and not file.endswith('/'):  # Skip if empty or directory
                     target_path = os.path.join(death_counter_extract, relative_path)
-                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+                    target_dir = os.path.dirname(target_path)
                     try:
+                        os.makedirs(target_dir, exist_ok=True)
                         with zf.open(file) as source, open(target_path, "wb") as target:
-                            target.write(source.read())
-                        # Make file writable to avoid permission issues
-                        os.chmod(target_path, stat.S_IWRITE | stat.S_IREAD)
+                            shutil.copyfileobj(source, target)
                     except Exception as e:
                         print(f"Warning: Could not extract {file}: {e}")
-
-
+    
     launch_updater(death_counter_extract)
 
 def launch_updater(new_exe_path):
