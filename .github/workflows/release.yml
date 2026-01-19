@@ -5,8 +5,8 @@ permissions:
   
 on:
   push:
-      tags:
-        - "v*"
+    tags:
+      - "v*"
   
 jobs:
   build:
@@ -15,38 +15,30 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Versatile PyInstaller
+    - name: Build DeathCounter
       uses: sayyid5416/pyinstaller@v1.8.0
       with:
         spec: 'DeathCounter.spec'
         requirements: 'deathcounter/requirements.txt'
         options: --onedir, --clean, --noconfirm
 
-    - name: 'add build to release'
-      run: |
-        mkdir release
-        xcopy dist\DeathCounter release\DeathCounter /E /I
-
-    
-    - name: Build updater
+    - name: Build Updater
       uses: sayyid5416/pyinstaller@v1.8.0
       with:
         spec: 'updater.spec'
         options: --onefile, --clean, --noconfirm
-        
-    - name: Package release zip
-      run: |
-        echo "Workspace contents:"
-        dir
-        echo "Dist contents:"
-        dir dist
 
-        
+    - name: Create release directory
+      run: |
+        mkdir release
+        xcopy dist\DeathCounter release\DeathCounter /E /I
         xcopy dist\updater release\updater /E /I
 
+    - name: Package and upload release
+      run: |
         powershell Compress-Archive -Path release\* -DestinationPath DeathCounter_win.zip
 
-    - name: Upload asset
+    - name: Upload release asset
       uses: softprops/action-gh-release@v2
       with:
         files: DeathCounter_win.zip
