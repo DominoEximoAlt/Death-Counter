@@ -141,9 +141,22 @@ def download_and_update(zip_url):
                 f.write(chunk)
 
     extract_dir = os.path.join(tmp_dir, "new")
-    zipfile.ZipFile(zip_path).extractall(extract_dir)
+    death_counter_extract = os.path.join(extract_dir, "DeathCounter")
+    os.makedirs(death_counter_extract, exist_ok=True)
+    
+    # Extract only the DeathCounter folder from the zip, flattening the structure
+    with zipfile.ZipFile(zip_path) as zf:
+        for file in zf.namelist():
+            if file.startswith("DeathCounter/DeathCounter/"):
+                # Remove the "DeathCounter/DeathCounter/" prefix to flatten
+                relative_path = file.replace("DeathCounter/DeathCounter/", "", 1)
+                if relative_path:  # Skip if empty (directory entry)
+                    target_path = os.path.join(death_counter_extract, relative_path)
+                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+                    with zf.open(file) as source, open(target_path, "wb") as target:
+                        target.write(source.read())
 
-    launch_updater(extract_dir)
+    launch_updater(death_counter_extract)
 
 def launch_updater(new_exe_path):
     current_exe = sys.executable
