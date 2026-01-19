@@ -41,7 +41,7 @@ jobs:
         echo "Dist contents:"
         dir dist
 
-        mkdir release
+        
         xcopy dist\updater release\updater /E /I
 
         powershell Compress-Archive -Path release\* -DestinationPath DeathCounter_win.zip
