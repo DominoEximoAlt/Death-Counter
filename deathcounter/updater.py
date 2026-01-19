@@ -50,8 +50,7 @@ try:
     
     log("Launching new exe")
     # Run the updated exe
-    new_exe = os.path.join(old_folder, os.path.basename(old_exe))
-    subprocess.Popen([new_exe])
+    subprocess.Popen([old_exe])
 except Exception as e:
     print(f"Update failed: {e}")
     log(f"Update failed: {e}")
