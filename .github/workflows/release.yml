@@ -31,26 +31,6 @@ jobs:
         requirements: 'deathcounter/requirements.txt'
         options: --onedir, --noconfirm
 
-    - name: Create release folder
-      run: |
-        New-Item -ItemType Directory -Path release -Force | Out-Null
-        Copy-Item -Path dist\DeathCounter -Destination release\DeathCounter -Recurse
-        Copy-Item -Path dist\updater -Destination release\updater -Recurse
-        Write-Host "Release folder contents:"
-        Get-ChildItem -Path release -Recurse -Depth 1
-
-    - name: Package and upload release
-      run: |
-        Write-Host "Contents of release folder:"
-        Get-ChildItem -Path release -Recurse | Select-Object FullName
-        
-        Write-Host "Creating zip file..."
-        $items = @(Get-ChildItem -Path release)
-        Compress-Archive -Path $items -DestinationPath DeathCounter_win.zip -Force
-        
-        Write-Host "Zip file created:"
-        Get-ChildItem DeathCounter_win.zip | Select-Object Name, Length
-
   release:
     needs: build
     runs-on: ubuntu-latest
