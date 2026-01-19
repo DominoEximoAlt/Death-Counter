@@ -90,12 +90,11 @@ def start_selector():
     startNew_button = ttk.Button(pop_up, text="Start New", command=start_new_run)
     startNew_button.pack(pady=10)
     Label(pop_up, text=f"Version:" + get_version() + " | Developed by DominoEximoAlt", font=("Arial", 8)).pack(pady=10)
-    print(get_version())
     pop_up.mainloop()
     
     
 
-def maybe_prompt_update(pop_up):
+def maybe_prompt_update():
         result = check_for_update()
         
         if not result:
@@ -106,7 +105,7 @@ def maybe_prompt_update(pop_up):
             "Update available",
             f"A new version ({latest}) is available.\n\nUpdate now?"
         ):
-            download_and_update(url,pop_up)    
+            download_and_update(url)    
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -132,7 +131,7 @@ def check_for_update():
 
 
 
-def download_and_update(zip_url, pop_up):
+def download_and_update(zip_url):
     tmp_dir = tempfile.mkdtemp()
     zip_path = os.path.join(tmp_dir, "update.zip")
     with requests.get(zip_url, stream=True) as r:
@@ -144,24 +143,19 @@ def download_and_update(zip_url, pop_up):
     extract_dir = os.path.join(tmp_dir, "new")
     zipfile.ZipFile(zip_path).extractall(extract_dir)
 
-    launch_updater(extract_dir, pop_up)
+    launch_updater(extract_dir)
 
-def launch_updater(new_dir, pop_up):
-    current_dir = os.path.dirname(sys.executable)
-    updater = f"""
-    timeout /t 1 > nul
-    rmdir /s /q "{current_dir}"
-    move "{new_dir}\\DeathCounter\\" "{current_dir}"
-    start "" "{current_dir}\\DeathCounter.exe"
-    """
+def launch_updater(new_exe_path):
+    current_exe = sys.executable
+    updater_path = os.path.join(os.path.dirname(current_exe), "updater.exe")
 
-    bat_path = os.path.join(os.getenv("TEMP"), "deathcounter_update.bat")
-    with open(bat_path, "w") as f:
-        f.write(updater)
+    subprocess.Popen([
+        updater_path,
+        current_exe,
+        new_exe_path
+    ])
 
-    subprocess.Popen(bat_path, shell=True)
-    
-    sys.exit()
+    sys.exit(0)
     
 
 def start_update_check(root):

@@ -35,6 +35,13 @@ jobs:
         upload_exe_with_name: DeathCounter
         options: --onedir, --clean, --noconfirm, --name DeathCounter
 
+    
+    - name: Build updater
+      uses: sayyid5416/pyinstaller@v1.8.0
+      with:
+        spec: 'updater.spec'
+        upload_exe_with_name: updater
+        options: --onefile, --clean, --noconfirm, --name updater
         
     - name: Zip build
       run: |
