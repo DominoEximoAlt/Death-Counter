@@ -22,24 +22,19 @@ jobs:
         requirements: 'deathcounter/requirements.txt'
         options: --onedir, --noconfirm
 
-    - name: Save DeathCounter
-      run: |
-        New-Item -ItemType Directory -Path release -Force | Out-Null
-        Copy-Item -Path dist\DeathCounter -Destination release\DeathCounter -Recurse -Force
-        Write-Host "DeathCounter copied. Release folder:"
-        Get-ChildItem release
-
     - name: Build Updater
       uses: sayyid5416/pyinstaller@v1.8.0
       with:
         spec: 'updater.spec'
-        options: --onedir, --clean, --noconfirm
+        options: --onedir, --noconfirm
 
-    - name: Copy Updater to release
+    - name: Create release folder
       run: |
-        Copy-Item -Path dist\updater -Destination release\updater -Recurse -Force
-        Write-Host "Updater copied. Release folder contents:"
-        Get-ChildItem release
+        New-Item -ItemType Directory -Path release -Force | Out-Null
+        Copy-Item -Path dist\DeathCounter -Destination release\DeathCounter -Recurse
+        Copy-Item -Path dist\updater -Destination release\updater -Recurse
+        Write-Host "Release folder contents:"
+        Get-ChildItem -Path release -Recurse -Depth 1
 
     - name: Package and upload release
       run: |
