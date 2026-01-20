@@ -29,7 +29,8 @@ try:
     log("Updater started")
     # Get the DeathCounter folder path (parent of the exe)
     old_folder = os.path.dirname(old_exe)
-
+    old_folder = os.path.abspath(old_folder)
+    
     log("Making new folder writable")
     # Make new folder writable
     make_writable(new_folder)
