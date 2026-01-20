@@ -42,11 +42,13 @@ try:
         shutil.rmtree(backup, ignore_errors=True)
     
     time.sleep(1)
-    shutil.move(old_folder, backup)
-    
-    log("Moving new folder into place")
+    shutil.copytree(old_folder, backup)
+
+    if os.path.exists(old_folder):
+        make_writable(old_folder)
+        shutil.rmtree(old_folder, ignore_errors=True)
     # Move new folder to replace old location
-    shutil.move(new_folder, old_folder)
+    shutil.copytree(new_folder, old_folder)
     
     log("Launching new exe")
     # Run the updated exe

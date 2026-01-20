@@ -187,7 +187,8 @@ def launch_updater(new_exe_path):
         new_exe_path
     ])
 
-    sys.exit(0)
+    time.sleep(2)
+    os._exit(0)
     
 def get_updater_path(current_exe):
     exe_dir = os.path.dirname(current_exe)      # DeathCounter/
