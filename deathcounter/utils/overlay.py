@@ -4,10 +4,10 @@ from tkinter import ttk
 import time
 import tkinter
 import psutil
-from deathcounter.utils.handle_death import *
-from deathcounter.utils.capture import capture_screen
+from .handle_death import *
+from .capture import capture_screen
 import threading
-from deathcounter.utils.timer import Timer
+from .timer import Timer
 
 
 is_running = False

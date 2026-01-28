@@ -2,6 +2,11 @@ import cv2
 import sys, os
 import numpy as np
 
+_SIFT = cv2.SIFT_create()
+_BF = cv2.BFMatcher()
+
+_TEMPLATE_CACHE = {}
+'''
 def detect_death(currentFrame, game_name):
     img_rgb = currentFrame
     assert img_rgb is not None, "file could not be read, check with os.path.exists()"
@@ -51,7 +56,36 @@ def detect_death(currentFrame, game_name):
     ##    cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
     cv2.destroyAllWindows()
     return good.__len__()
-    
+ '''  
+def detect_death(gray_frame, game_name: str) -> int:
+    """
+    Returns number of good SIFT matches.
+    gray_frame MUST be grayscale.
+    """
+
+    _, _, des1 = _load_template(game_name)
+
+    # Downscale frame to reduce SIFT cost
+    frame_small = cv2.resize(gray_frame, None, fx=0.5, fy=0.5)
+
+    kp2, des2 = _SIFT.detectAndCompute(frame_small, None)
+    if des2 is None:
+        return 0
+
+    matches = _BF.knnMatch(des1, des2, k=2)
+
+    good = 0
+
+    try:
+        
+
+        for m, n in matches:
+            if m.distance < 0.75 * n.distance:
+                good += 1
+
+        return good
+    except ValueError:
+        pass
 
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
@@ -59,3 +93,20 @@ def resource_path(relative_path):
     else:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
+
+def _load_template(game_name: str):
+    if game_name in _TEMPLATE_CACHE:
+        return _TEMPLATE_CACHE[game_name]
+
+    path = resource_path(f"deathcounter/assets/{game_name}_cropped_template.png")
+
+    template = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+    if template is None:
+        raise RuntimeError(f"Template not found: {path}")
+
+    kp, des = _SIFT.detectAndCompute(template, None)
+    if des is None:
+        raise RuntimeError(f"No descriptors in template: {path}")
+
+    _TEMPLATE_CACHE[game_name] = (template, kp, des)
+    return template, kp, des

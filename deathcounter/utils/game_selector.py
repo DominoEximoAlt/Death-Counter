@@ -70,7 +70,7 @@ def start_selector():
         global game_exe
         game_exe = GAMES[selected_game][:-4]
         pop_up.destroy()
-        from deathcounter.utils.overlay import start_overlay
+        from .overlay import start_overlay
         start_overlay(game_exe, selected_monitor)
 
     def start_new_run():
@@ -79,9 +79,9 @@ def start_selector():
         global game_exe
         game_exe = GAMES[selected_game][:-4]
         pop_up.destroy()
-        from deathcounter.utils.state import initialize_state
+        from .state import initialize_state
         initialize_state(game_name=game_exe)
-        from deathcounter.utils.overlay import start_overlay
+        from .overlay import start_overlay
         start_overlay(game_exe, selected_monitor)
 
     pop_up.protocol('WM_DELETE_WINDOW', pop_up.destroy)
